@@ -238,7 +238,7 @@ a:hover { color: #7a5aa8; }
 .seal {
   position: absolute;
   left: 50%; top: 68%;
-  width: 35%;
+  width: 27%;
   transform: translate(-50.3%, -61.3%);
   z-index: 6;
   line-height: 0;
@@ -250,8 +250,8 @@ a:hover { color: #7a5aa8; }
   opacity: 0;
 }
 
-/* The seal is 37.3% of this image's width, so a 35%-of-card image puts the
-   seal at 0.35 x 0.373 = 13% of the card width, matching the reference. */
+/* The seal is 37.3% of this image's width, so a 27%-of-card image puts the
+   seal at 0.27 x 0.373 = 10% of the card width. */
 .seal-img {
   display: block;
   width: 100%;
