@@ -87,13 +87,15 @@ a:hover { color: #7a5aa8; }
   container-type: inline-size;
   cursor: pointer;
   transform-style: preserve-3d;
-  transition: transform 1100ms cubic-bezier(.6,-0.2,.3,1), opacity 900ms ease;
+  /* Durations here are read back by script.js, which sequences the phases
+     off them. Change these and the timings follow automatically. */
+  transition: transform 950ms cubic-bezier(.5,0,.62,.3), opacity 750ms ease-in 200ms;
   transform: none;
   opacity: 1;
 }
 
 .envelope.flown {
-  transform: translateY(-130vh) rotateX(42deg) rotateZ(-8deg) scale(0.55);
+  transform: translateY(-125vh) rotateX(34deg) rotateZ(-6deg) scale(0.62);
   opacity: 0;
 }
 
@@ -112,8 +114,10 @@ a:hover { color: #7a5aa8; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: transform 900ms cubic-bezier(.2,.8,.3,1) 350ms;
+  /* Waits for the flap to be most of the way open before sliding out */
+  transition: transform 900ms cubic-bezier(.22,.72,.28,1) 520ms;
   transform: translateY(0) scale(1);
+  will-change: transform;
 }
 
 .envelope.opened .invite-card {
@@ -171,23 +175,37 @@ a:hover { color: #7a5aa8; }
   width: 100%; height: 68%;
   transform-origin: top center;
   transform-style: preserve-3d;
-  transition: transform 800ms cubic-bezier(.5,.05,.2,1);
+  transition: transform 900ms cubic-bezier(.62,.02,.24,1);
   transform: rotateX(0deg);
   z-index: 4;
+  will-change: transform;
+}
+
+/* Folds flat open, and steps back in Z so the card slides out in front of it
+   rather than fighting it for the same plane. */
+.envelope.opened .flap {
+  transform: rotateX(-180deg) translateZ(-2px);
+}
+
+.flap-inner,
+.flap-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.flap-inner {
+  background: linear-gradient(180deg, #D7CBEE 0%, #C6B4E4 58%, #B2A0D6 100%);
   /* casts a real triangular shadow onto the envelope body below */
   filter: drop-shadow(0 10px 18px rgba(59,28,90,0.30));
 }
 
-.envelope.opened .flap {
-  transform: rotateX(-172deg);
-}
-
-.flap-inner {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  background: linear-gradient(180deg, #D7CBEE 0%, #C6B4E4 58%, #B2A0D6 100%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+/* Pre-flipped, so it faces the reader exactly when the flap lies open.
+   Without this the flap simply vanishes past 90deg. */
+.flap-back {
+  transform: rotateX(180deg);
+  background: linear-gradient(180deg, #A794CB 0%, #B7A5D9 55%, #C4B4E1 100%);
 }
 
 .flap-title {
@@ -242,12 +260,14 @@ a:hover { color: #7a5aa8; }
   transform: translate(-50.3%, -61.3%);
   z-index: 6;
   line-height: 0;
-  transition: opacity 400ms ease;
+  transition: opacity 300ms ease, transform 420ms cubic-bezier(.34,1.4,.64,1);
   opacity: 1;
 }
 
+/* Breaks away with the flap rather than just dissolving in place */
 .envelope.opened .seal {
   opacity: 0;
+  transform: translate(-50.3%, -61.3%) scale(0.72) rotate(-14deg);
 }
 
 /* The seal is 37.3% of this image's width, so an 18%-of-card image puts the

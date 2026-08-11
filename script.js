@@ -21,6 +21,24 @@
   // The rest of the invitation stays sealed until the envelope is opened.
   document.body.classList.add('locked');
 
+  // Longest transition declared on an element, in ms (duration + delay).
+  function longestTransition(el) {
+    var cs = getComputedStyle(el);
+    function parts(v) {
+      return v.split(',').map(function (s) {
+        s = s.trim();
+        return (s.indexOf('ms') > -1 ? parseFloat(s) : parseFloat(s) * 1000) || 0;
+      });
+    }
+    var dur = parts(cs.transitionDuration);
+    var del = parts(cs.transitionDelay);
+    return dur.reduce(function (max, d, i) {
+      return Math.max(max, d + (del[i % del.length] || 0));
+    }, 0);
+  }
+
+  // Phase 2 starts only once the flap and card have finished, so the envelope
+  // never launches mid-slide. Read from the CSS so the two cannot drift apart.
   function openLetter() {
     if (opened) return;
     opened = true;
@@ -32,18 +50,24 @@
     }
     if (tapHint) tapHint.style.opacity = '0';
 
+    var card = envelope.querySelector('.invite-card');
+    var flap = envelope.querySelector('.flap');
+    var settle = Math.max(longestTransition(card), longestTransition(flap));
+    var liftOff = settle + 260; // a beat to read the open card
+    var flight = longestTransition(envelope);
+
     setTimeout(function () {
       envelope.classList.add('flown');
-    }, 1050);
+    }, liftOff);
 
-    // Drop the hero entirely so the message section becomes the top of the page,
-    // then hand scrolling back to the reader.
+    // Only drop the hero once the envelope has actually finished flying,
+    // otherwise the tail of the animation is cut off with a visible pop.
     setTimeout(function () {
       hero.style.display = 'none';
       document.body.classList.remove('locked');
       window.scrollTo(0, 0);
       layoutPaws();
-    }, 1750);
+    }, liftOff + flight + 60);
   }
 
   envelope.addEventListener('click', openLetter);
