@@ -59,8 +59,8 @@ a:hover { color: #7a5aa8; }
 }
 
 @keyframes pulseHeart {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.14); }
+  0%, 100% { transform: scale(0.75); }
+  50% { transform: scale(0.85); }
 }
 
 /* ---------- Hero ---------- */
@@ -141,6 +141,23 @@ a:hover { color: #7a5aa8; }
     inset 0 -30px 70px rgba(59,28,90,0.07),
     0 30px 70px rgba(59,28,90,0.22);
   overflow: hidden;
+}
+
+/* Fine paper grain over both the body and the flap. Generated with an SVG
+   fractal-noise filter rather than a photo, so there is no asset to load and
+   nothing recognisable to bleed through. Desaturated to grey, then blended
+   with `overlay` so mid-grey is neutral and the noise reads as both fibre
+   highlights and shadows. `stitchTiles` keeps the tile seamless. */
+.env-body::after,
+.flap-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
 }
 
 /* Left fold: catches the light */
@@ -231,7 +248,7 @@ a:hover { color: #7a5aa8; }
 .seal {
   position: absolute;
   left: 50%; top: 60%;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -25%);
   z-index: 6;
   line-height: 0;
   transition: opacity 400ms ease;
@@ -251,7 +268,7 @@ a:hover { color: #7a5aa8; }
   left: 50%;
   top: 15%;
   transform: translate(-50%, -50%) rotate(-8deg);
-  width: clamp(300px, 46vw, 690px);
+  width: clamp(100px, 16vw, 230px);
   height: auto;
   z-index: 1;
   filter: drop-shadow(0 6px 12px rgba(59,28,90,0.22));
@@ -261,7 +278,7 @@ a:hover { color: #7a5aa8; }
   position: relative;
   z-index: 2;
   display: block;
-  width: clamp(80px, 12vw, 180px);
+  width: clamp(60px, 9vw, 120px);
   height: auto;
   filter: drop-shadow(0 8px 14px rgba(59,28,90,0.30));
 }
