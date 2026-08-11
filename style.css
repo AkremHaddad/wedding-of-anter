@@ -134,12 +134,12 @@ a:hover { color: #7a5aa8; }
 .env-body {
   position: absolute;
   inset: 0;
-  background: linear-gradient(165deg, #DBD0ED 0%, #D2C6E7 52%, #C7B9E0 100%);
+  background: linear-gradient(165deg, #DCD1EE 0%, #CFC2E5 52%, #BFB0DA 100%);
   border-radius: 6px;
   box-shadow:
-    inset 0 2px 3px rgba(255,255,255,0.50),
-    inset 0 -30px 70px rgba(59,28,90,0.07),
-    0 30px 70px rgba(59,28,90,0.22);
+    inset 0 2px 3px rgba(255,255,255,0.55),
+    inset 0 -60px 110px rgba(59,28,90,0.16),
+    0 30px 70px rgba(59,28,90,0.26);
   overflow: hidden;
 }
 
@@ -163,35 +163,37 @@ a:hover { color: #7a5aa8; }
 /* Left fold: catches the light */
 .env-sheen-r {
   position: absolute; left: 0; bottom: 0; width: 100%; height: 100%;
-  background: linear-gradient(to top right, rgba(255,255,255,0.20) 49.5%, transparent 49.9%);
+  background: linear-gradient(to top right, rgba(255,255,255,0.34) 49.5%, transparent 49.9%);
 }
 
-/* Right fold: falls a touch into shade */
+/* Right fold: turns away from the light, so it sits in shade */
 .env-sheen-l {
   position: absolute; right: 0; bottom: 0; width: 100%; height: 100%;
-  background: linear-gradient(to top left, rgba(59,28,90,0.055) 49.5%, transparent 49.9%);
+  background: linear-gradient(to top left, rgba(59,28,90,0.15) 49.5%, transparent 49.9%);
 }
 
-/* Bottom panel, plus the pale crease line along its two edges */
+/* Bottom panel: a crisp crease highlight along its two edges, and the paper
+   darkening as it falls away toward the bottom of the envelope */
 .env-shadow {
   position: absolute; left: 0; bottom: 0; width: 100%; height: 100%;
   background:
-    linear-gradient(to top right, rgba(255,255,255,0.30) 49.85%, transparent 50%),
-    linear-gradient(to top left, rgba(255,255,255,0.30) 49.85%, transparent 50%),
-    linear-gradient(0deg, rgba(59,28,90,0.07), transparent 50%);
+    linear-gradient(to top right, rgba(255,255,255,0.42) 49.85%, transparent 50%),
+    linear-gradient(to top left, rgba(255,255,255,0.42) 49.85%, transparent 50%),
+    linear-gradient(0deg, rgba(59,28,90,0.17), transparent 55%);
 }
 
 .flap {
   position: absolute;
   left: 0; top: 0;
-  width: 100%; height: 60%;
+  /* Keep in sync with `.seal` top below, which anchors to this tip */
+  width: 100%; height: 68%;
   transform-origin: top center;
   transform-style: preserve-3d;
   transition: transform 800ms cubic-bezier(.5,.05,.2,1);
   transform: rotateX(0deg);
   z-index: 4;
   /* casts a real triangular shadow onto the envelope body below */
-  filter: drop-shadow(0 6px 12px rgba(59,28,90,0.18));
+  filter: drop-shadow(0 10px 18px rgba(59,28,90,0.30));
 }
 
 .envelope.opened .flap {
@@ -202,7 +204,7 @@ a:hover { color: #7a5aa8; }
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  background: linear-gradient(180deg, #E4DBF4 0%, #DBD0EE 60%, #D3C7E9 100%);
+  background: linear-gradient(180deg, #E7DFF6 0%, #D8CCEC 58%, #C8BAE2 100%);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
@@ -242,12 +244,13 @@ a:hover { color: #7a5aa8; }
   margin-top: 10px;
 }
 
-/* Anchored so the seal's top edge meets the flap tip (60%) and it hangs over
-   the junction, like a real sealed envelope. Top-aligning rather than
-   centring keeps that true at any viewport aspect ratio. */
+/* Anchored to the flap tip (68%), then pulled up a quarter of its own height
+   so it straddles the junction, like a real sealed envelope. Anchoring to the
+   tip rather than centring on the envelope keeps that true at any viewport
+   aspect ratio. This top value must match `.flap` height above. */
 .seal {
   position: absolute;
-  left: 50%; top: 60%;
+  left: 50%; top: 68%;
   transform: translate(-50%, -25%);
   z-index: 6;
   line-height: 0;
