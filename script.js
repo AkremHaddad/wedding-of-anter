@@ -21,20 +21,28 @@
   // The rest of the invitation stays sealed until the envelope is opened.
   document.body.classList.add('locked');
 
-  // Longest transition declared on an element, in ms (duration + delay).
-  function longestTransition(el) {
+  // Longest motion declared on an element, in ms (duration + delay). Covers
+  // both transitions and keyframe animations: the flap opens via an animation,
+  // so reading transitions alone would silently score it as 0.
+  function longestMotion(el) {
     var cs = getComputedStyle(el);
     function parts(v) {
-      return v.split(',').map(function (s) {
+      return String(v).split(',').map(function (s) {
         s = s.trim();
         return (s.indexOf('ms') > -1 ? parseFloat(s) : parseFloat(s) * 1000) || 0;
       });
     }
-    var dur = parts(cs.transitionDuration);
-    var del = parts(cs.transitionDelay);
-    return dur.reduce(function (max, d, i) {
-      return Math.max(max, d + (del[i % del.length] || 0));
-    }, 0);
+    function longest(durList, delList) {
+      var dur = parts(durList);
+      var del = parts(delList);
+      return dur.reduce(function (max, d, i) {
+        return Math.max(max, d + (del[i % del.length] || 0));
+      }, 0);
+    }
+    return Math.max(
+      longest(cs.transitionDuration, cs.transitionDelay),
+      longest(cs.animationDuration, cs.animationDelay)
+    );
   }
 
   // Phase 2 starts only once the flap and card have finished, so the envelope
@@ -52,9 +60,9 @@
 
     var card = envelope.querySelector('.invite-card');
     var flap = envelope.querySelector('.flap');
-    var settle = Math.max(longestTransition(card), longestTransition(flap));
+    var settle = Math.max(longestMotion(card), longestMotion(flap));
     var liftOff = settle + 260; // a beat to read the open card
-    var flight = longestTransition(envelope);
+    var flight = longestMotion(envelope);
 
     setTimeout(function () {
       envelope.classList.add('flown');

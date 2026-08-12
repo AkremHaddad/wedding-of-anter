@@ -175,16 +175,30 @@ a:hover { color: #7a5aa8; }
   width: 100%; height: 68%;
   transform-origin: top center;
   transform-style: preserve-3d;
-  transition: transform 900ms cubic-bezier(.62,.02,.24,1);
   transform: rotateX(0deg);
   z-index: 4;
   will-change: transform;
 }
 
-/* Folds flat open, and steps back in Z so the card slides out in front of it
-   rather than fighting it for the same plane. */
+/* Folds away from the reader, and drops behind everything at the halfway
+   point so the card slides out over it.
+   Two reasons this is a keyframe animation rather than a transition:
+   1. The stacking flip has to happen at 50%, where the flap is edge-on and
+      zero-width, so the change is invisible. Before that it must stay in
+      front to cover the envelope body; after it, it must sit behind the card.
+   2. Interpolating between mismatched transform lists forces the browser to
+      decompose matrices, and a 180deg rotation is the degenerate case for
+      that, which is what made the fold jitter. Matching lists at both ends
+      keeps the rotation exact. */
+@keyframes flapOpen {
+  0%   { transform: rotateX(0deg); z-index: 4; }
+  49%  { z-index: 4; }
+  50%  { z-index: -1; }
+  100% { transform: rotateX(-180deg); z-index: -1; }
+}
+
 .envelope.opened .flap {
-  transform: rotateX(-180deg) translateZ(-2px);
+  animation: flapOpen 900ms cubic-bezier(.62,.02,.24,1) forwards;
 }
 
 .flap-inner,
