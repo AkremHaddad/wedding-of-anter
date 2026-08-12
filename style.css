@@ -63,11 +63,6 @@ body.locked {
 a { color: var(--ink); text-decoration: none; }
 a:hover { color: var(--gold-deep); }
 
-@keyframes pulseHeart {
-  0%, 100% { transform: scale(0.75); }
-  50% { transform: scale(0.85); }
-}
-
 /* ---------- Hero ---------- */
 
 .hero {
@@ -497,13 +492,13 @@ a:hover { color: var(--gold-deep); }
   position: absolute;
   left: 50%;
   top: 52%;
-  /* `translate` is its own property, so the pulse below can own `transform` */
   translate: -50% -50%;
-  width: 168%;
+  /* The wreath used to pulse between scale(0.75) and scale(0.85), so its
+     rendered size was about 80% of the width set here. With the animation
+     gone the width absorbs that factor directly. */
+  width: 134%;
   height: auto;
   z-index: 1;
-  transform-origin: center;
-  animation: pulseHeart 2.6s ease-in-out infinite;
 }
 
 .cal-day--highlight .cal-day-num {
@@ -511,6 +506,10 @@ a:hover { color: var(--gold-deep); }
      so it takes the same warm ink as the other days, one weight heavier. */
   color: var(--ink);
   font-weight: 400;
+  font-size: clamp(37px, 7.3vw, 78px);
+  /* Lifted off the shared baseline into the wide upper half of the wreath,
+     where the hollow actually is. In em so it tracks the size above. */
+  transform: translateY(-0.1em);
 }
 
 /* ---------- Evening timeline ---------- */
