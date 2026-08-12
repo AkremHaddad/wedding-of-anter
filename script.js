@@ -4,8 +4,10 @@
   var PAW_COUNT = 22;
   var WEDDING_TARGET_UTC = Date.UTC(2026, 9, 25, 18, 0, 0); // 25 Oct 2026, 19:00 GMT+1
 
-  // purple, lavender, light yellow, dark yellow, creamy
-  var PALETTE = ['#3B1C5A', '#C6B7E2', '#F2E0AC', '#E6B44C', '#E3D5BC'];
+  // Footer paws: warm ink, lavender, two golds, warm tan. The old light-yellow
+  // and creamy entries were within a few percent of the page background, so
+  // two of every five paws were effectively invisible.
+  var PALETTE = ['#4E3324', '#C6B7E2', '#DDBB63', '#E6B44C', '#8C6849'];
 
   var envelope = document.getElementById('envelope');
   var openBtn = document.getElementById('openBtn'); // currently commented out in the markup

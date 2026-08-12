@@ -1,5 +1,15 @@
 :root {
   --purple: #3B1C5A;
+  /* Warm text scale. The page sits on warm cream (#F6F1E8), and the old
+     lilac-grey text (#8a76ad) sank into it — small caps like the weekday
+     labels were the first to go. These are browns pulled toward the gold in
+     the palette, so they read as part of the lavender-and-wax scheme rather
+     than as neutral body text. The envelope keeps its purple ink: that is
+     writing on lavender paper, a different surface. */
+  --ink: #4E3324;
+  --ink-soft: #6A4A32;
+  --muted: #8C6849;
+  --gold-deep: #B07A22;
   --lavender: #C6B7E2;
   --light-yellow: #F2E0AC;
   --dark-yellow: #E6B44C;
@@ -19,7 +29,7 @@ html, body {
 body {
   position: relative;
   font-family: 'Cormorant Garamond', Georgia, serif;
-  color: #3B1C5A;
+  color: var(--ink);
   overflow-x: hidden;
   background-image:
     radial-gradient(circle at 12% 8%, rgba(198,183,226,0.30), transparent 42%),
@@ -50,8 +60,8 @@ body.locked {
   height: 100vh;
 }
 
-a { color: #3B1C5A; text-decoration: none; }
-a:hover { color: #7a5aa8; }
+a { color: var(--ink); text-decoration: none; }
+a:hover { color: var(--gold-deep); }
 
 @keyframes pulseHeart {
   0%, 100% { transform: scale(0.75); }
@@ -340,14 +350,15 @@ a:hover { color: #7a5aa8; }
 .tap-hint {
   font-size: 13px;
   letter-spacing: 0.2em;
-  color: #9b8ab8;
+  color: var(--muted);
 }
 
 .tap-hint-solo {
   font-size: clamp(12px, 1.5vw, 15px);
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: rgba(59,28,90,0.45);
+  color: var(--muted);
+  opacity: 0.85;
   pointer-events: none;
   transition: opacity 500ms ease;
 }
@@ -375,7 +386,7 @@ a:hover { color: #7a5aa8; }
   font-family: 'Great Vibes', cursive;
   font-size: clamp(38px, 5.5vw, 64px);
   line-height: 1.25;
-  color: #3B1C5A;
+  color: var(--ink);
 }
 
 .message-text {
@@ -383,7 +394,7 @@ a:hover { color: #7a5aa8; }
   font-size: clamp(20px, 2.6vw, 30px);
   line-height: 1.75;
   font-weight: 300;
-  color: #4d3568;
+  color: var(--ink-soft);
   text-wrap: pretty;
 }
 
@@ -420,7 +431,7 @@ a:hover { color: #7a5aa8; }
   font-size: clamp(13px, 1.6vw, 16px);
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: #8a76ad;
+  color: var(--muted);
 }
 
 .eyebrow--lg {
@@ -440,14 +451,16 @@ a:hover { color: #7a5aa8; }
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  opacity: 0.45;
+  /* 0.45 put the off days under the texture; they are meant to recede, not
+     disappear. The highlight now carries the emphasis on its own. */
+  opacity: 0.72;
 }
 
 .cal-day-label {
   font-size: 12px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #8a76ad;
+  color: var(--muted);
 }
 
 /* Every day gets the same square slot, so all the numbers match in size */
@@ -465,7 +478,7 @@ a:hover { color: #7a5aa8; }
   z-index: 2;
   font-size: clamp(30px, 6vw, 64px);
   font-weight: 300;
-  color: #3B1C5A;
+  color: var(--ink);
   line-height: 1;
 }
 
@@ -474,27 +487,29 @@ a:hover { color: #7a5aa8; }
 }
 
 .cal-day--highlight .cal-day-label {
-  color: #3B1C5A;
+  color: var(--ink);
 }
 
-/* The 25th sits on a purple heart */
+/* The 25th sits inside a lavender wreath. It is an open shape, so the number
+   is dark warm ink in the hollow rather than knocked out of a solid fill, and
+   it needs more width than the old heart to clear the number. */
 .cal-heart-bg {
   position: absolute;
   left: 50%;
   top: 52%;
   /* `translate` is its own property, so the pulse below can own `transform` */
   translate: -50% -50%;
-  width: 122%;
+  width: 168%;
   height: auto;
   z-index: 1;
-  fill: var(--purple);
   transform-origin: center;
   animation: pulseHeart 2.6s ease-in-out infinite;
-  filter: drop-shadow(0 14px 26px rgba(59,28,90,0.28));
 }
 
 .cal-day--highlight .cal-day-num {
-  color: #F6F1E8;
+  /* Was knocked out in cream against the old solid heart; the wreath is open,
+     so it takes the same warm ink as the other days, one weight heavier. */
+  color: var(--ink);
   font-weight: 400;
 }
 
@@ -537,26 +552,26 @@ a:hover { color: #7a5aa8; }
 .timeline-arabic {
   font-family: 'Amiri', serif;
   font-size: clamp(22px, 3.4vw, 34px);
-  color: #3B1C5A;
+  color: var(--ink);
   direction: rtl;
 }
 
 .timeline-event {
   font-size: clamp(22px, 3.2vw, 32px);
   font-style: italic;
-  color: #3B1C5A;
+  color: var(--ink);
 }
 
 .timeline-until {
   font-size: clamp(20px, 3vw, 30px);
   font-style: italic;
-  color: #3B1C5A;
+  color: var(--ink);
 }
 
 .timeline-time {
   font-size: clamp(16px, 2.2vw, 22px);
   letter-spacing: 0.22em;
-  color: #E6B44C;
+  color: var(--gold-deep);
 }
 
 /* ---------- Place ---------- */
@@ -608,14 +623,14 @@ a:hover { color: #7a5aa8; }
   font-family: 'Great Vibes', cursive;
   font-size: clamp(34px, 5vw, 54px);
   line-height: 1.25;
-  color: #3B1C5A;
+  color: var(--ink);
 }
 
 .place-sub {
   font-size: clamp(14px, 1.8vw, 17px);
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: #8a76ad;
+  color: var(--muted);
 }
 
 .place-cta {
@@ -623,7 +638,7 @@ a:hover { color: #7a5aa8; }
   font-size: 13px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #E6B44C;
+  color: var(--gold-deep);
 }
 
 /* ---------- Countdown ---------- */
@@ -640,7 +655,7 @@ a:hover { color: #7a5aa8; }
   font-family: 'Great Vibes', cursive;
   font-size: clamp(32px, 4.6vw, 52px);
   line-height: 1.25;
-  color: #3B1C5A;
+  color: var(--ink);
 }
 
 .countdown-row {
@@ -661,26 +676,26 @@ a:hover { color: #7a5aa8; }
 .countdown-num {
   font-size: clamp(40px, 7vw, 74px);
   font-weight: 300;
-  color: #3B1C5A;
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
 .countdown-num--accent {
-  color: #E6B44C;
+  color: var(--gold-deep);
 }
 
 .countdown-label {
   font-size: 12px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #8a76ad;
+  color: var(--muted);
 }
 
 .countdown-sub {
   font-size: clamp(14px, 1.8vw, 17px);
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #8a76ad;
+  color: var(--muted);
 }
 
 /* ---------- Footer ---------- */
@@ -706,5 +721,5 @@ a:hover { color: #7a5aa8; }
   font-family: 'Great Vibes', cursive;
   font-size: clamp(26px, 3.6vw, 40px);
   line-height: 1.25;
-  color: #3B1C5A;
+  color: var(--ink);
 }
