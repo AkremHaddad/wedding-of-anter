@@ -365,7 +365,7 @@ a:hover { color: var(--gold-deep); }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 110px 24px;
+  padding: 110px 0;
 }
 
 .message-wrap {
@@ -393,23 +393,66 @@ a:hover { color: var(--gold-deep); }
   text-wrap: pretty;
 }
 
-/* ---------- Lavender rule ---------- */
+/* ---------- Flanking lavender columns ---------- */
 
-/* The garland asset is a seamless horizontal tile: its left and right edges
-   are cut through the same stems, so `repeat-x` joins them invisibly. Sizing
-   is `auto 100%` so the band's height drives the tile width and the flowers
-   keep their proportions at any viewport. */
-.lavender-rule {
-  width: 100%;
-  height: clamp(86px, 11vw, 150px);
-  background-image: url("images/lavender-strip.png");
-  background-repeat: repeat-x;
-  background-position: center center;
-  background-size: auto 100%;
-  /* The two ends are mid-stem cuts, so they are faded out rather than left to
-     collide with the viewport edge. */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+/* Everything below the hero sits between two lavender runs. The column art is
+   the horizontal garland tile rotated 90deg: it was seamless left-to-right, so
+   the rotation is seamless top-to-bottom and `repeat-y` joins it invisibly. */
+.edged {
+  position: relative;
+  /* Wider than the columns themselves, so nothing inside ever runs up against
+     the flowers. Sections centre themselves, so the symmetry is preserved. */
+  padding-inline: clamp(30px, 7.5vw, 100px);
+}
+
+.edged::before,
+.edged::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(22px, 5.5vw, 76px);
+  background-image: url("images/lavender-column.png");
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  /* Both ends fade rather than stopping on a cut stem */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.edged::before { left: 0; }
+/* Mirrored so the two sides read as a matched pair rather than a repeat */
+.edged::after { right: 0; transform: scaleX(-1); }
+
+/* The columns are positioned, so without this they would paint over the
+   sections, which are not. */
+.edged > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Floral frame ---------- */
+
+/* `border-image` rather than a background: the frame has to hold its corner
+   clusters at a fixed thickness while the box grows with however many lines
+   the message wraps to. A stretched background would squash the roses on wide
+   screens and stretch them on narrow ones.
+   The slice is 30% on both axes, so each corner is 450x300 of the source. The
+   left/right border is kept at 1.5x the top/bottom to match that 450:300, or
+   the corners would render out of proportion. */
+.framed {
+  width: min(880px, 100%);
+  border-style: solid;
+  border-color: transparent;
+  border-width: clamp(32px, 8vw, 92px) clamp(48px, 12vw, 138px);
+  border-image-source: url("images/frame.png");
+  border-image-slice: 30% 30%;
+  border-image-repeat: round;
+  padding: clamp(6px, 2vw, 28px);
+  display: flex;
+  justify-content: center;
 }
 
 /* ---------- Calendar ---------- */
@@ -700,7 +743,7 @@ a:hover { color: var(--gold-deep); }
 /* ---------- Footer ---------- */
 
 .site-footer {
-  padding: 20px 24px 90px;
+  padding: 20px 24px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -721,4 +764,17 @@ a:hover { color: var(--gold-deep); }
   font-size: clamp(26px, 3.6vw, 40px);
   line-height: 1.25;
   color: var(--ink);
+}
+
+/* ---------- Footer lavender ---------- */
+
+/* A field the page ends in. Same seamless-tile trick as the columns, anchored
+   to the bottom so the stems are always rooted at the page edge. */
+.footer-lavender {
+  width: 100%;
+  height: clamp(120px, 17vw, 240px);
+  background-image: url("images/footer-lavender.png");
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  background-size: auto 100%;
 }
