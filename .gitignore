@@ -1,0 +1,4 @@
+# Source drops: the originals behind the assets in images/, kept out of the
+# repo because they run to tens of MB and nothing loads them. The optimised
+# derivatives that the site actually uses are committed.
+images/raw images/

@@ -365,7 +365,7 @@ a:hover { color: var(--gold-deep); }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 110px 0;
+  padding: 70px 0;
 }
 
 .message-wrap {
@@ -384,6 +384,12 @@ a:hover { color: var(--gold-deep); }
   color: var(--ink);
 }
 
+.sprig-divider {
+  width: min(340px, 76%);
+  height: auto;
+  display: block;
+}
+
 .message-text {
   margin: 0;
   font-size: clamp(20px, 2.6vw, 30px);
@@ -395,9 +401,10 @@ a:hover { color: var(--gold-deep); }
 
 /* ---------- Flanking lavender columns ---------- */
 
-/* Everything below the hero sits between two lavender runs. The column art is
-   the horizontal garland tile rotated 90deg: it was seamless left-to-right, so
-   the rotation is seamless top-to-bottom and `repeat-y` joins it invisibly. */
+/* Everything below the framed message sits between two lavender runs. The art
+   is cut to tile top-to-bottom, so `repeat-y` joins it invisibly. The message
+   is deliberately outside this wrapper: its own frame owns the page edges
+   there, and running the columns behind it would double up. */
 .edged {
   position: relative;
   /* Wider than the columns themselves, so nothing inside ever runs up against
@@ -443,10 +450,10 @@ a:hover { color: var(--gold-deep); }
    left/right border is kept at 1.5x the top/bottom to match that 450:300, or
    the corners would render out of proportion. */
 .framed {
-  width: min(880px, 100%);
+  width: 100%;
   border-style: solid;
   border-color: transparent;
-  border-width: clamp(32px, 8vw, 92px) clamp(48px, 12vw, 138px);
+  border-width: clamp(44px, 10vw, 130px) clamp(66px, 15vw, 195px);
   border-image-source: url("images/frame.png");
   border-image-slice: 30% 30%;
   border-image-repeat: round;
