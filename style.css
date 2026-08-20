@@ -365,7 +365,7 @@ a:hover { color: var(--gold-deep); }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 70px 0;
+  padding: 110px 24px;
 }
 
 .message-wrap {
@@ -397,69 +397,6 @@ a:hover { color: var(--gold-deep); }
   font-weight: 300;
   color: var(--ink-soft);
   text-wrap: pretty;
-}
-
-/* ---------- Flanking lavender columns ---------- */
-
-/* Everything below the framed message sits between two lavender runs. The art
-   is cut to tile top-to-bottom, so `repeat-y` joins it invisibly. The message
-   is deliberately outside this wrapper: its own frame owns the page edges
-   there, and running the columns behind it would double up. */
-.edged {
-  position: relative;
-  /* Wider than the columns themselves, so nothing inside ever runs up against
-     the flowers. Sections centre themselves, so the symmetry is preserved. */
-  padding-inline: clamp(30px, 7.5vw, 100px);
-}
-
-.edged::before,
-.edged::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: clamp(22px, 5.5vw, 76px);
-  background-image: url("images/lavender-column.png");
-  background-repeat: repeat-y;
-  background-size: 100% auto;
-  /* Both ends fade rather than stopping on a cut stem */
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.edged::before { left: 0; }
-/* Mirrored so the two sides read as a matched pair rather than a repeat */
-.edged::after { right: 0; transform: scaleX(-1); }
-
-/* The columns are positioned, so without this they would paint over the
-   sections, which are not. */
-.edged > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ---------- Floral frame ---------- */
-
-/* `border-image` rather than a background: the frame has to hold its corner
-   clusters at a fixed thickness while the box grows with however many lines
-   the message wraps to. A stretched background would squash the roses on wide
-   screens and stretch them on narrow ones.
-   The slice is 30% on both axes, so each corner is 450x300 of the source. The
-   left/right border is kept at 1.5x the top/bottom to match that 450:300, or
-   the corners would render out of proportion. */
-.framed {
-  width: 100%;
-  border-style: solid;
-  border-color: transparent;
-  border-width: clamp(44px, 10vw, 130px) clamp(66px, 15vw, 195px);
-  border-image-source: url("images/frame.png");
-  border-image-slice: 30% 30%;
-  border-image-repeat: round;
-  padding: clamp(6px, 2vw, 28px);
-  display: flex;
-  justify-content: center;
 }
 
 /* ---------- Calendar ---------- */
