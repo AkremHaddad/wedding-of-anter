@@ -567,42 +567,31 @@ a:hover { color: var(--gold-deep); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 36px;
+  gap: clamp(22px, 3.5vw, 38px);
 }
 
-.place-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.map-circle {
-  position: relative;
-  width: min(480px, 86vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  overflow: hidden;
-  background: radial-gradient(circle at 40% 30%, #efe7dc, #ddd0bd 60%, #cbb99f 100%);
-  box-shadow: 0 24px 60px rgba(59,28,90,0.24);
-  border: 8px solid #FFFDF9;
+/* Heading with a rule running out to either side. The label is wrapped in a
+   span so the trailing letter-space does not push it off centre: the padding
+   puts the same gap back on the left. */
+.eyebrow--ruled {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: clamp(14px, 3vw, 30px);
+  width: min(520px, 84vw);
 }
 
-.map-img {
-  width: 62%;
-  height: 62%;
-  object-fit: contain;
+.eyebrow--ruled > span {
+  padding-left: 0.5em;
 }
 
-.place-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
+.eyebrow--ruled::before,
+.eyebrow--ruled::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
 }
 
 .place-title {
@@ -610,21 +599,24 @@ a:hover { color: var(--gold-deep); }
   font-size: clamp(34px, 5vw, 54px);
   line-height: 1.25;
   color: var(--ink);
+  text-align: center;
 }
 
-.place-sub {
-  font-size: clamp(14px, 1.8vw, 17px);
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--muted);
+/* The mark stands on the page itself now: no disc, no backdrop, no shadow. At
+   this size it reads as a signature under the name rather than as artwork. */
+.place-link {
+  display: block;
+  line-height: 0;
 }
 
-.place-cta {
-  margin-top: 10px;
-  font-size: 13px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--gold-deep);
+.map-img {
+  width: clamp(76px, 12vw, 118px);
+  height: auto;
+  transition: opacity 300ms ease;
+}
+
+.place-link:hover .map-img {
+  opacity: 0.62;
 }
 
 /* ---------- Countdown ---------- */
