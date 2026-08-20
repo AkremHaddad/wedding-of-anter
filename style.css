@@ -604,9 +604,37 @@ a:hover { color: var(--gold-deep); }
 
 /* The mark stands on the page itself now: no disc, no backdrop, no shadow. At
    this size it reads as a signature under the name rather than as artwork. */
+/* The mark plus the arrow and its label are one row, and the row is what gets
+   centred. That is what carries the mark itself off to the left, exactly as
+   far as the annotation is wide. */
 .place-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 16px);
   line-height: 0;
+}
+
+.map-hint {
+  display: flex;
+  align-items: center;
+  gap: clamp(7px, 1.4vw, 12px);
+  color: var(--gold-deep);
+}
+
+.map-arrow {
+  width: clamp(30px, 5.5vw, 60px);
+  height: auto;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.map-hint-label {
+  font-size: clamp(11px, 1.5vw, 13px);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 .map-img {
