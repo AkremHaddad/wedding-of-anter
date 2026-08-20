@@ -20,8 +20,41 @@
 
   var opened = false;
 
-  // The rest of the invitation stays sealed until the envelope is opened.
-  document.body.classList.add('locked');
+  // Reopening the envelope on every single refresh was the actual complaint:
+  // a visitor scrolled halfway down, refreshed, and got dumped back at a
+  // sealed envelope they had to tap through again. A plain reload has no
+  // memory of its own, so the fix is to keep that memory ourselves. A
+  // timestamp in localStorage survives reloads (and tab closes, unlike
+  // sessionStorage) and gets checked against a TTL: recent enough and the
+  // page resumes already-open with no animation; stale (or absent, as on a
+  // first visit) and the letter is sealed same as before. Re-opening also
+  // slides the timestamp forward, so "recent" tracks the last visit rather
+  // than only the first.
+  var OPEN_KEY = 'weddingLetterOpenedAt';
+  var OPEN_TTL_MS = 3 * 60 * 60 * 1000; // 3 hours
+  var resuming = false;
+
+  try {
+    var storedAt = Number(localStorage.getItem(OPEN_KEY));
+    if (storedAt && Date.now() - storedAt < OPEN_TTL_MS) {
+      resuming = true;
+      localStorage.setItem(OPEN_KEY, String(Date.now()));
+    } else if (storedAt) {
+      localStorage.removeItem(OPEN_KEY);
+    }
+  } catch (e) {
+    // Private browsing / disabled storage can throw on access. Falling back
+    // to the sealed envelope (resuming stays false) is the safe default.
+  }
+
+  if (resuming) {
+    opened = true;
+    envelope.classList.add('opened');
+    hero.style.display = 'none';
+  } else {
+    // The rest of the invitation stays sealed until the envelope is opened.
+    document.body.classList.add('locked');
+  }
 
   // Longest motion declared on an element, in ms (duration + delay). Covers
   // both transitions and keyframe animations: the flap opens via an animation,
@@ -77,6 +110,9 @@
       document.body.classList.remove('locked');
       window.scrollTo(0, 0);
       layoutPaws();
+      try {
+        localStorage.setItem(OPEN_KEY, String(Date.now()));
+      } catch (e) {}
     }, liftOff + flight + 60);
   }
 
@@ -113,7 +149,7 @@
   function buildFooterPaws() {
     if (!pawRow) return;
     var ns = 'http://www.w3.org/2000/svg';
-    var tilts = [-16, 12, -8, 16, -14, 10, -6, 18, -12, 8];
+    var tilts = [-16, 12, -8, 16, -14, 10, -6, 18, -12];
 
     for (var i = 0; i < tilts.length; i++) {
       var svg = document.createElementNS(ns, 'svg');
